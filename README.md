@@ -81,11 +81,22 @@ Vá até a pasta do projeto e digite:
 python monitor.py
 ```
 
-**👻 Opção B: O "Modo Fantasma" Automático (Recomendado)**
-Se você não quer ficar abrindo janelas e quer que seu PC fique vigiando o Wi-fi de 10 em 10 minutos pro resto da vida de forma invisível:
-1. Na pasta do projeto, clique com o **botão direito** no arquivo `install_background_task.bat`.
-2. Selecione **"Executar como Administrador"**.
-3. Uma tela rápida confirmará o sucesso. Pronto! O script rodará no painel de fundo silenciosamente a cada 10 minutos.
+**👻 Opção B: O "Modo Fantasma" Automático via Agendador de Tarefas (Recomendado)**
+Para que o seu computador vigie o Wi-Fi 24 horas por dia sem janelas abertas:
+1. Abra o Menu Iniciar do Windows e digite **Agendador de Tarefas** (*Task Scheduler*).
+2. Na aba da direita, clique em **Criar Tarefa...** (Não use a Básica).
+3. Na aba **Geral**:
+   - Dê o nome de `NetworkMonitor_Background`.
+   - Marque a caixinha **"Executar com privilégios mais altos"** (Obrigatório).
+   - Marque **"Executar estando o usuário logado ou não"** (Deixa o processo invisível).
+4. Na aba **Disparadores**: Clique em Novo, escolha **Ao iniciar o sistema**. Em "Repetir a tarefa a cada:", digite **10 minutos**, com duração "Indefinidamente".
+5. Na aba **Ações**: 
+   - Clique em Novo. Em Programa/script, digite `pythonw.exe`
+   - Em "Adicione argumentos", digite `monitor.py`
+   - Em "Iniciar em (Opcional)", **cole o caminho completo da pasta do seu projeto** (ex: `C:\Network-Monitor-Bot\`).
+6. Salve a tarefa e digite a senha do seu usuário do Windows. 
+
+*(**Plano B Automático**: Caso tenha dificuldades com o Agendador de Tarefas, você pode usar nosso script instalador alternativo clicando com o botão direito no arquivo `install_background_task.bat` e selecionando "Executar como Administrador").*
 
 ---
 
