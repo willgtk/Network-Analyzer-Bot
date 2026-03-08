@@ -261,7 +261,16 @@ def scan_network():
         threading.Thread(target=send_telegram_alert, args=(msg_telegram,)).start()
         
         for intruso in intrusos_detectados:
-            resp = input(f"\nDeseja DESTRUIR A CONEXÃO de internet deste dispositivo? ({intruso['ip']})? (s/N): ")
+            try:
+                import sys
+                if not sys.stdin.isatty():
+                    print(" [!] Modo background detectado. Bloqueio automático ignorado.")
+                    resp = 'n'
+                else:
+                    resp = input(f"\nDeseja DESTRUIR A CONEXÃO de internet deste dispositivo? ({intruso['ip']})? (s/N): ")
+            except (EOFError, RuntimeError):
+                resp = 'n'
+                
             if resp.lower().strip() == 's':
                 alvo_gateway = "192.168.6.1" if intruso['ip'].startswith("192.168.6.") else "192.168.5.1"
                 t = threading.Thread(target=block_device, args=(intruso['ip'], alvo_gateway, intruso['mac']))
@@ -281,5 +290,18 @@ def scan_network():
     else:
         print("\n[+] Nenhum intruso detectado. Rede segura.")
 
+    return clients, intrusos_detectados
+
 if __name__ == "__main__":
-    scan_network()
+    try:
+        clients, intrusos = scan_network()
+        
+        # Envia relatório final para saber se a tarefa rodou com sucesso no background
+        msg = f"🔄 *Varredura Concluída*\n\n✅ Status: *Sucesso*\n📱 Total Dispositivos: {len(clients)}\n🛡️ Intrusos Encontrados: {len(intrusos)}"
+        # Roda numa thread separada pra não agarrar
+        threading.Thread(target=send_telegram_alert, args=(msg,)).start()
+        
+    except Exception as e:
+        erro_msg = f"❌ *FALHA NA VARREDURA*\n\nOcorreu um erro crítico no Network Monitor que impediu a conclusão:\n`{str(e)}`"
+        send_telegram_alert(erro_msg)
+        print(f"\n[-] Erro Crítico: {e}")

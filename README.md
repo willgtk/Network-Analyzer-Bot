@@ -47,19 +47,47 @@ cp .env.example .env
 2. Edite o `.env` gerado e inclua suas credenciais do Telegram (Bot Token e Chat ID).
 3. (Opcional) Popule o arquivo `dispositivos_conhecidos.json` com os Endereços MAC em **MAIÚSCULAS** dos aparelhos da sua casa que são de confiança.
 
-## 🏃 Como usar
+## 📖 Tutorial Passo a Passo (Para Iniciantes)
 
-Esses scripts manipulam a placa de rede e enviam pacotes cruciais, logo **eles requerem execução em Modo Administrador (Windows) ou `sudo` (Linux)**.
+Se você não tem familiaridade com programação, siga estes passos simples para proteger sua rede de casa:
 
-Iniciando o Monitoramento Geral:
-```bash
+### Passo 1: Preparando o Computador (Windows)
+1. **Instale o Python**: Baixe e instale o [Python 3](https://www.python.org/downloads/) oficial. **Importante**: Na primeira tela da instalação, marque a caixinha **"Add Python to PATH"**.
+2. **Instale o Npcap**: Baixe e instale o [Npcap](https://npcap.com/#download) (ele é a "placa de rede virtual" que permite que o Python enxergue todos os vizinhos do seu Wi-Fi).
+3. **Baixe este projeto**: Clique no botão verde `<> Code` no topo desta página do GitHub e selecione **"Download ZIP"**. Extraia a pasta no seu computador (por exemplo, em `C:\Network-Monitor-Bot`).
+
+### Passo 2: Configurando o Bot do Telegram
+Para o script te mandar mensagens no celular quando um intruso entrar:
+1. Abra o seu Telegram, pesquise por **@BotFather** e inicie uma conversa.
+2. Envie o comando `/newbot` e siga as instruções para criar um nome e um "username" terminando em `bot` (ex: `MeuGuardião_bot`).
+3. O BotFather vai te dar um **Token** (código longo). Copie esse número.
+4. Pesquise por **@userinfobot**, inicie-o e anote o seu número de **Id** (ex: `103123456`).
+5. Volte no Telegram, pesquise o `@nome` do robô que você acabou de criar no passo 2 e clique em **Iniciar**.
+
+### Passo 3: Cadastrando suas Configurações
+1. Abra a pasta do projeto que você baixou.
+2. Dê um duplo-clique no arquivo `install_requirements.bat` (ou abra o terminal CMD na pasta e digite `pip install -r requirements.txt`). Isso vai baixar o "Scapy".
+3. Renomeie o arquivo `.env.example` para apenas `.env`.
+4. Abra o `.env` no Bloco de Notas e cole o seu `Token` e o seu `ID` do Telegram que você pegou no Passo 2. Salve e feche.
+5. (Opcional): Descubra os endereços "MAC" dos seus celulares/TVs de casa e ensine o robô a ignorá-los adicionando-os no arquivo `dispositivos_conhecidos.json`.
+
+### Passo 4: Iniciando a Vigilância
+Você tem duas opções de uso:
+
+**▶️ Opção A: Rodar Manualmente com Fio Vermelho (Tela Preta)**
+Apenas abra o Menu Iniciar, procure pelo programa `CMD` (Prompt de Comando), clique com o **Botão Direito -> Executar como Administrador**. 
+Vá até a pasta do projeto e digite:
+```cmd
 python monitor.py
 ```
 
-Iniciando o IDS Passivo:
-```bash
-python sniffer.py
-```
+**👻 Opção B: O "Modo Fantasma" Automático (Recomendado)**
+Se você não quer ficar abrindo janelas e quer que seu PC fique vigiando o Wi-fi de 10 em 10 minutos pro resto da vida de forma invisível:
+1. Na pasta do projeto, clique com o **botão direito** no arquivo `install_background_task.bat`.
+2. Selecione **"Executar como Administrador"**.
+3. Uma tela rápida confirmará o sucesso. Pronto! O script rodará no painel de fundo silenciosamente a cada 10 minutos.
+
+---
 
 ## ⚠️ Aviso Legal
 Estes scripts foram desenvolvidos com intenções **puramente educacionais e de defesa cibernética (Blue Team)**. 
