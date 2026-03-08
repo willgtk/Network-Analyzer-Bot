@@ -1,0 +1,13 @@
+# Environments
+.env
+
+# Cache
+__pycache__/
+
+# Logs and Reports
+*.log
+*.pcap
+*.csv
+
+# Trusted Devices (Personal Data)
+dispositivos_conhecidos.json
