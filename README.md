@@ -26,7 +26,7 @@ Sempre que um Dispositivo Novo conectar (Monitor) ou um Port Scan acontecer (Sni
 
 ## 🛠️ Requisitos e Instalação
 
-1.  **Python 3.8+**
+1.  **Python 3.10+**
 2.  **Npcap (Windows)** ou libpcap (Linux) instalados no sistema para permitir o *Packet Sniffing* a nível de hardware.
 
 Clone este repositório e instale as dependências:
@@ -36,16 +36,25 @@ cd network-monitor
 pip install -r requirements.txt
 ```
 
-*(Nota: Crie um `requirements.txt` contendo as libs `scapy`, `python-dotenv`.)*
-
 ## ⚙️ Configuração
 
 1. Faça uma cópia do arquivo de ambiente:
 ```bash
 cp .env.example .env
 ```
-2. Edite o `.env` gerado e inclua suas credenciais do Telegram (Bot Token e Chat ID).
-3. (Opcional) Popule o arquivo `dispositivos_conhecidos.json` com os Endereços MAC em **MAIÚSCULAS** dos aparelhos da sua casa que são de confiança.
+2. Edite o `.env` e configure:
+   - **Telegram**: Bot Token e Chat ID para receber alertas.
+   - **Redes**: `REDES_ALVO` e `GATEWAYS` com as sub-redes e gateways da sua rede.
+   - **SSIDs** (opcional): `REDES_SSIDS` para identificar cada rede pelo nome.
+3. (Opcional) Popule o arquivo `dispositivos_conhecidos.json` com os Endereços MAC (formato `AA:BB:CC:DD:EE:FF`) dos aparelhos confiáveis.
+
+### Arquitetura de Módulos
+| Arquivo | Descrição |
+|---|---|
+| `config.py` | Configuração central (redes, logging, constantes) |
+| `utils.py` | Funções compartilhadas (Telegram, MAC vendor, etc.) |
+| `monitor.py` | Scanner ARP + IPS |
+| `sniffer.py` | Sniffer de pacotes + IDS |
 
 ## 📖 Tutorial Passo a Passo (Para Iniciantes)
 
@@ -96,7 +105,6 @@ Para que o seu computador vigie o Wi-Fi 24 horas por dia sem janelas abertas:
    - Em "Iniciar em (Opcional)", **cole o caminho completo da pasta do seu projeto** (ex: `C:\Network-Monitor-Bot\`).
 6. Salve a tarefa e digite a senha do seu usuário do Windows. 
 
-*(**Plano B Automático**: Caso tenha dificuldades com o Agendador de Tarefas, você pode usar nosso script instalador alternativo clicando com o botão direito no arquivo `install_background_task.bat` e selecionando "Executar como Administrador").*
 
 ---
 

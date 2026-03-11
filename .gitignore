@@ -1,13 +1,18 @@
 # Environments
 .env
+**/.env
 
 # Cache
 __pycache__/
+*.pyc
 
 # Logs and Reports
 *.log
 *.pcap
 *.csv
+
+# Vendor Cache (auto-generated)
+vendor_cache.json
 
 # Trusted Devices (Personal Data)
 dispositivos_conhecidos.json
