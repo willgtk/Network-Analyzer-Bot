@@ -296,8 +296,13 @@ if __name__ == "__main__":
             f"🔄 *Varredura Concluída*\n\n"
             f"✅ Status: *Sucesso*\n"
             f"📱 Total Dispositivos: {len(clients)}\n"
-            f"🛡️ Intrusos Encontrados: {len(intrusos)}"
+            f"🛡️ Intrusos Encontrados: {len(intrusos)}\n\n"
+            f"📋 *Dispositivos Conectados:*\n"
         )
+        for c in clients:
+            status_emoji = "🔴" if "INTRUSO" in c['status'] or "CLONADO" in c['status'] else "🟢"
+            nome_exibicao = c['status'] if status_emoji == "🟢" and c['status'] != "Confiável (Local)" else c['hostname']
+            msg += f"{status_emoji} `{c['ip']}` - {nome_exibicao} ({c['mac']})\n"
         threading.Thread(target=send_telegram_alert, args=(msg,), daemon=True).start()
         # Aguardar thread do Telegram finalizar
         time.sleep(2)
